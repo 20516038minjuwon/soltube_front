@@ -1,0 +1,75 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root{
+    --bg-default:#fff;      /*CSS 변수 지정*/
+    --bg-paper:#ececec;
+
+    --text-default:rgba(0,0,0,0.87);
+    --text-disabled: rgba(0,0,0,0.38);
+
+    --divider:rgba(0,0,0,0.12);
+}
+
+.dark{
+    --bg-default:#121212;
+    --bg-paper:#4c4c4c;
+
+    --text-default:#fff;
+    --text-disabled:rgba(255,255,255,0.5);
+
+    --divider:rgba(0,0,0,0.12);
+}
+
+@theme{
+    /*
+        '--color' 라고 하는 키워드를 붙여서 변수를 만들어주면
+        코드에서 사용가능한 컬러 클래스를 만들어줌
+    */
+    --color-background-defalut:var(--bg-default);
+    --color-background-paper: var(--bg-paper);
+
+    --color-text-defalut:var(--text-default);
+    --color-text-disabled:var(--text-disabled);
+
+    --color-divider:var(--divider);
+
+    --color-primary-main:#ff8888;
+    --color-primary-light:rgb(255, 159, 159);
+    --color-primary-dark:rgb(178, 95, 95);
+    --color-primary-contrastText:rgb(0,0,0,0.87);
+
+    --color-secondary-main: #f50057;
+    --color-secondary-light: rgb(247, 51, 120);
+    --color-secondary-dark: rgb(171, 0, 60);
+    --color-secondary-contrastText: #FFF;
+
+    --color-error-main: #d32f2f;
+    --color-error-light: #ef5350;
+    --color-error-dark: #c62828;
+    --color-error-contrastText: #FFF;
+
+    --color-warning-main: #ed6c02;
+    --color-warning-light: #ff9800;
+    --color-warning-dark: #e65100;
+    --color-warning-contrastText: #fff;
+
+    --color-info-main: #0288d1;
+    --color-info-light: #03a9f4;
+    --color-info-dark: #01579b;
+    --color-info-contrastText: #fff;
+
+    --color-success-main: #2e7d32;
+    --color-success-light: #4caf50;
+    --color-success-dark: #1b5e20;
+    --color-success-contrastText: #fff;
+}
+
+@layer base{
+    body{
+        background-color: var(--bg-default);
+        color: var(--text-default);
+        font-size: 16px;
+    }
+}

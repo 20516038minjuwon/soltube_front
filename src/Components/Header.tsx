@@ -1,9 +1,11 @@
 import {twMerge} from "tailwind-merge";
 import {Link} from "react-router";
-import {MdCampaign, MdDarkMode, MdMenu, MdSearch, MdVideoCall} from "react-icons/md";
+import {MdCampaign, MdDarkMode, MdLightMode, MdMenu, MdSearch, MdVideoCall} from "react-icons/md";
 import {FaRegUserCircle, FaYoutube} from "react-icons/fa";
+import {useThemeStore} from "../Stores/useTheme.ts";
 
 function Header() {
+    const {theme,toggleTheme}=useThemeStore();
     return<header className={twMerge(
         ['fixed','top-0','left-0','right-0','h-header','px-4'],
         ['border-b','border-divider'],
@@ -55,13 +57,19 @@ function Header() {
             >
                 <MdCampaign className={'w-6 h-6'}/>
             </Link>
-            <button className={twMerge(
+            <button
+                onClick={toggleTheme}
+                className={twMerge(
                 ['flex','items-center','justify-center','p-2'],
                 ['rounded-full','hover:bg-text-default/10']
             )}
-                    title={"다크모드로 변경"}
+                title={theme === "dark" ? "라이트모드로 변경":"다크모드로 변경"}
             >
-                <MdDarkMode className={'w-6 h-6'}/>
+                {theme === "dark" ?(
+                    <MdLightMode className={'w-6 h-6'}/>
+                ):(
+                    <MdDarkMode className={'w-6 h-6'}/>
+                )}
             </button>
             <Link to={"/upload"} className={twMerge(
                 ['flex','items-center','justify-center','p-2'],

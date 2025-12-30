@@ -6,7 +6,7 @@ type User = {
     username: string;
     email: string;
     password: string;
-    nickName: string;
+    nickname: string;
     birthData: string;
     phoneNumber: string;
     gender: "MALE" | "FEMALE";

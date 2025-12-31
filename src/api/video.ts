@@ -1,0 +1,29 @@
+import { api } from "./axios.ts";
+
+export interface Video {
+    id:number;
+    createdAt:string;
+
+    title:string;
+    description:string;
+    videoPath:string;
+    thumbnailPath:string;
+    views:number;
+    likeCount:number;
+    isLiked?:boolean;             //지금보고있는 사용자가 좋아요를 눌렀는가 ?
+    isSubscribed?:boolean;       //지금 보고있는 사용자가 구독을 했는가 ?
+    subscriberCount?:number;     //지금 영상의 채널장 구독자 수
+    author:{                     //영상 업로드한 사람
+        id:number;
+        nickname:string;
+        profileImage?:string;
+    }
+}
+
+//지금까지는 직접적인 멸령을 통해서 사용했다면 이번엔 따로 속성을 통해 감싸서 사용할 것임
+export const fetchVideos = async () => {
+    const response =await api.get<Video[]>("/videos");
+    return response.data;
+}
+
+//통신이 무엇인가 잘못됐다는 오류가 뜨면 해당 파일에서 해결할 수 있게끔 다 만들어둘 것임

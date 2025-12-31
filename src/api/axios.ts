@@ -1,4 +1,5 @@
 import  axios from "axios";
+import { useAuthStore } from "../Stores/useAuthStore.ts";
 
 /*백엔드와의 통신을 할 때 기본적으로 갖춰야 하는 형식을 만든다*/
 export const api = axios.create({
@@ -12,4 +13,19 @@ export const api = axios.create({
         * (인터넷 상에서 정해진 규칙아님)*/
         "x-client-key": import.meta.env.VITE_API_KEY,
     }
+});
+
+/* axios 를 사용하는 가장 큰 이유
+*  1) interceptor을 사용할 수 있음
+*     interceptor : 요청이 전달하기 전에, 전달되는 내용을 가로채서 더 적거나 할 수 잇음*/
+
+api.interceptors.request.use(config =>{
+    /* 요청(request)를 할 때, interceptor가 편지를 가로채서
+    *  회원정보가 AuthStore에 있으면, 그 token 값을 편지봉투에서
+    * Authorization 이라고 하는 Key의 값을 쓰고 그걸로 교체해서 보내도록 함.*/
+    const token=useAuthStore.getState().token;
+    if(token) {
+        config.headers.Authorization=`Bearer ${token}`;
+    }
+    return config;
 })

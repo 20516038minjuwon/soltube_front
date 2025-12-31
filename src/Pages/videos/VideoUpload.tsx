@@ -1,8 +1,12 @@
 import { twMerge } from "tailwind-merge";
 import { useForm } from "react-hook-form";
-import { useEffect, useState } from "react";
+import { useEffect, useState, type KeyboardEvent} from "react";
 import { MdCloudUpload, MdImage } from "react-icons/md";
 import Input from "../../Components/ui/Input.tsx";
+import Button from "../../Components/ui/Button.tsx";
+import { useNavigate } from "react-router";
+import { api } from "../../api/axios.ts";
+import type { AxiosError } from "axios";
 
 interface UploadFormData{
     title: string;
@@ -11,6 +15,8 @@ interface UploadFormData{
     thumbnail:FileList;
 }
 function VideoUpload(){
+    const navigate = useNavigate();
+
     const {
         register,
         handleSubmit,
@@ -52,6 +58,60 @@ function VideoUpload(){
             return()=>URL.revokeObjectURL(url);
         }
     },[thumbnailFile])
+    /* 해시태그 관리용 코드*/
+    const [tagInput,setTagInput]=useState("");
+    const[tags,setTags]=useState<string[]>([]);
+    //KeyboardEvent도 javascript 타입과 react 타입  두 가지가 있어 타입을 수동 임포트 함
+    const handleKeyDown=(e:KeyboardEvent<HTMLInputElement>) => {
+        //엔터나 콤마 (,) 를 사용자가 입력했을 때
+        if(e.key === "Enter"||e.key === ","){
+            //submit의 기본기능이 동작하지 않게 함
+            e.preventDefault();
+            /* trim() : string의 양 끝단에 존재하는 공백 제거
+            *  replace(정규표현식, 대체문자열) : 정규표현식에 해당하는 문자열을 대체 문자열로 변경 */
+            const newTag=tagInput.trim().replace(/^#/,"");
+            if(newTag && !tags.includes(newTag)){
+                setTags([...tags,newTag]);
+                setTagInput("");
+            }
+        }
+    };
+    const removeTag=(tagToRemove:string)=>{
+        /*외부에서 주입받은 tagToRemove에 해당하는 string과
+        * 내부 요소가 다른 것들만 필터링해서 출력한 뒤, tags state에 저장*/
+        setTags(tags.filter(tag=>tag!==tagToRemove));
+    }
+    {/* onSubmit */}
+    const onSubmit=async (data:UploadFormData)=>{
+        try {
+            /* onSubmit 할 때 전달받은 정보는 UploadFormData 뿐 임.
+            *  그런데 그 내용에는 해시태그에 대한 내용이 없음
+            * (해스태그는 따로 수동으로 만들어줬기 때문) */
+
+            const formData=new FormData(); // 전달하려고 하는 FormData 형식을 새로 만들어줌
+            formData.append("title",data.title);
+            formData.append("description",data.description);
+            formData.append("video",data.video[0]);
+            formData.append("thumbnail",data.thumbnail[0]);
+            formData.append("hashtags",JSON.stringify(tags))
+
+            //서버 전송
+            await api.post("/videos",formData,{
+                headers:{
+                    /*파일이 포함된 전송을 할 때에는 꼭!!!!! 필수로 !!!!!!!
+                    *  "Content-Type":"multipart/form-data"로 해줘야 함*/
+                    "Content-Type":"multipart/form-data"
+                },
+            });
+            alert("업로드가 완료되었습니다.")
+            navigate("/");
+        }catch(e){
+            const axiosError=e as AxiosError<{message:string}>
+            const msg=axiosError.response?.data.message ||"업로드 실패"
+            alert(msg)
+        }
+
+    }
 
     return<div className={twMerge(
         ['min-h-[calc(100dvh-56px)]','px-4','py-10'],
@@ -59,7 +119,7 @@ function VideoUpload(){
     )}>
         <div className={twMerge(['w-full','max-w-200','space-y-6'])}>
             <h1 className={twMerge(['text-2xl','font-bold'])}>동영상 업로드</h1>
-            <form className={'space-y-8'}>
+            <form className={'space-y-8'} onSubmit={handleSubmit(onSubmit)}>
                 {/*동영상 업로드*/}
                 <div className={'space-y-2'}>
                     <label className={twMerge(['block','text-sm','font-medium'])}>동영상 파일</label>
@@ -156,6 +216,51 @@ function VideoUpload(){
                             </p>
                         )}
                     </div>
+                </div>
+                {/*해시태그*/}
+                <div className={'space-y-2'}>
+                    <label className={'block text-sm font-medium'}>해시태그</label>
+                    <div className={twMerge(
+                        ['flex flex-wrap gap-2 p-3'],
+                        ['border border-divider rounded-md'],
+                        //focus-within 접두사 : 내 안의 자식들까지 포함해서 focus가 걸리면 발동
+                        ['focus-within:border-secondary-main']
+                    )}>
+                        {/*해시태그 자체*/}
+                        {tags.map((tag) => (
+                            <span key={tag} className={twMerge(
+                                ['flex','items-center','gap-1'],
+                                ['bg-secondary-main/10','text-secondary-main'],
+                                ['px-2','py-1','rounded-full','text-sm']
+                            )}>
+                                #{tag}
+                                <button
+                                    type={"button"}
+                                    onClick={() => removeTag(tag)}
+                                    className={'hover:text-error-main'}
+                                >
+                                    &times;
+                                </button>
+                            </span>
+                        ))}
+                        {/* input */}
+                        <input
+                            value={tagInput}
+                            onChange={e=>setTagInput(e.target.value)}
+                            /* onKeyDown : 어떠한 키보드의 키를 누르게되면 발동되는 함수를 작성 */
+                            onKeyDown={handleKeyDown}
+                            placeholder={"태그 입력 후 엔터 (예: 사랑해민솔 )"}
+                            className={twMerge(
+                                ['flex min-w-30 outline-none'],
+                            )}
+                        />
+                    </div>
+                </div>
+                <div className={'flex justify-end gap-2'}>
+                    <Button type={"button"} variant={"ghost"}>취소</Button>
+                    <Button type={"submit"} disabled={isSubmitting}>
+                        {isSubmitting? "업로드 중...":"업로드"}
+                    </Button>
                 </div>
             </form>
         </div>

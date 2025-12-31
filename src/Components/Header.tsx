@@ -18,6 +18,7 @@ import {useThemeStore} from "../Stores/useTheme.ts";
 import { useModalStore } from "../Stores/useModal.ts";
 import { useAuthStore } from "../Stores/useAuthStore.ts";
 import Backdrop from "./ui/Backdrop.tsx";
+import Avatar from "./ui/Avatar.tsx";
 
 function Header() {
     const navigate = useNavigate();
@@ -51,7 +52,7 @@ function Header() {
             ['fixed','top-0','left-0','right-0','h-header','px-4'],
             ['border-b','border-divider'],
             ['flex','justify-between','items-center'],
-            ['z-50']
+            ['z-50','bg-background-paper']
         )}>
             {/*왼족*/}
             <div className={twMerge(['flex','items-center','gap-4'])}>
@@ -68,7 +69,7 @@ function Header() {
             {/*가운데*/}
             <div className={twMerge(
                 ['flex-1','max-w-[600px]'],
-                ['flex','items-center']
+                ['hidden','md:flex','items-center']
             )}>
                 <div className={'flex w-full'}>
                     <input
@@ -131,14 +132,12 @@ function Header() {
                             <MdNotifications className={'w-6 h-6'}/>
                         </button>
                         <div className={'relative'}>
-                            <button onClick={()=>setIsMenuOpen(!isMenuOpen)} className={twMerge(
-                                ['w-8','h-8','flex','justify-center','items-center'],
-                                ['rounded-full','bg-primary-main'],
-                                ['text-sm','font-bold','text-primary-contrastText'],
-                                ['hover:opacity-80','focus:outline-none'],
-                            )}>
-                                {user.nickname[0].toUpperCase()}
-                            </button>
+                            <Avatar
+                                nickname={user.nickname}
+                                size={"sm"}
+                                src={user.profileImage}
+                                onClick={()=>setIsMenuOpen(!isMenuOpen)}
+                            />
                             {isMenuOpen &&
                                 <div className={twMerge(
                                     ['absolute','top-full','right-0','mt-2','w-60'],

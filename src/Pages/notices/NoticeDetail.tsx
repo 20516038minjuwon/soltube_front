@@ -70,7 +70,7 @@ function NoticeDetail() {
                 ['border-t','border-divider','pt-6','mt-6'],
                 ['flex','justify-between','items-center'],
             )}>
-                <Button variant={"secondary"}onClick={()=>navigate("/notices")}>
+                <Button variant={"secondary"} onClick={()=>navigate("/notices")}>
                     목록으로
                 </Button>
                 {user?.role==="ADMIN" &&(

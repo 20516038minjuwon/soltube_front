@@ -24,7 +24,7 @@ const router = createBrowserRouter([
             //    경로 : /videos/upload > Upload
             //          /videos/:id    > Detail
             {
-                path: "videos",
+                path: "video",
                 children: [
                     { path: "upload", element: <VideoUpload /> },
                     { path: ":id", element: <VideoDetail /> },

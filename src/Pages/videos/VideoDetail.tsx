@@ -139,6 +139,7 @@ function VideoDetail() {
                             <Avatar
                                 nickname={video.author.nickname}
                                 src={video.author.profileImage}
+                                size={"md"}
                             />
                             <div>
                                 <p className={twMerge(["font-semibold", "text-sm"])}>

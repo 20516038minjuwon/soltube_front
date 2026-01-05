@@ -151,7 +151,7 @@ function Header() {
                                         <p className={'text-text-disabled text-xs'}>{user.email}</p>
                                     </div>
                                     <div className={"py-2"}>
-                                        <Link to={"/profile/edit"}
+                                        <Link to={"users/edit"}
                                               onClick={()=>setIsMenuOpen(false)}
                                               className={twMerge(
                                                   ['flex','items-center','gap-2','px-4','py-2'],

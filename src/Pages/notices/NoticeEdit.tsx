@@ -1,7 +1,7 @@
 import { useNavigate, useParams } from "react-router";
 import { useAuthStore } from "../../Stores/useAuthStore.ts";
 import { useForm } from "react-hook-form";
-import { createNotice, fetchNotice } from "../../api/notice.ts";
+import {  fetchNotice, updateNotice } from "../../api/notice.ts";
 import { twMerge } from "tailwind-merge";
 import Input from "../../Components/ui/Input.tsx";
 import Button from "../../Components/ui/Button.tsx";
@@ -42,7 +42,7 @@ function NoticeEdit() {
 
     const onSubmit=async (formDate:NoticeEditCFormData)=>{
         try {
-            const result=await createNotice(formDate.title,formDate.content);
+            const result=await updateNotice(Number(id),formDate);
             navigate(`/notices/${result.id}`);
         }catch(e){
             console.log(e)

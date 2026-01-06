@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { twMerge } from "tailwind-merge";
 import Button from "../../Components/ui/Button.tsx";
 import { fetchInquires, type Inquiry } from "../../api/inquiry.ts";
+import Pagination from "../../Components/ui/Pagination.tsx";
 
 dayjs.extend(relativeTime);
 dayjs.locale("ko");
@@ -17,20 +18,29 @@ function InquiryList(){
     const [inquiries, setInquiries] = useState<Inquiry[]>([]);
     const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
-        loadInquired().then(() => {});
-    }, []);
+    const [currentPage, setCurrentPage] = useState(1);
+    const[totalPages, setTotalPages] = useState(1);
+    const LIMIT=5;
 
-    const loadInquired = async () => {
+    useEffect(() => {
+        loadInquired(currentPage).then(() => {});
+    }, [currentPage]);
+
+    const loadInquired = async (page:number) => {
         try {
-            const data = await fetchInquires();
+            const data = await fetchInquires(page,LIMIT);
             setInquiries(data.inquiries);
+            setTotalPages(data.totalPages);
         } catch (e) {
             console.log(e);
         } finally {
             setLoading(false);
         }
     };
+    const onPageChange = (page:number) => {
+        setCurrentPage(page);
+        window.scrollTo(0, 0);
+    }
 
     return (
         <div className={twMerge(["w-full", "max-w-4xl", "mx-auto", "px-4"])}>
@@ -101,11 +111,10 @@ function InquiryList(){
                             ))
                         )
                     )}
-
                     </tbody>
                 </table>
             </div>
-
+            <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={onPageChange}/>
         </div>
     );
 }

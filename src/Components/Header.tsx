@@ -169,7 +169,7 @@ function Header() {
                                             <MdAccountBox className={'w-4 h-4'}/>
                                             내 채널
                                         </Link>
-                                        <Link to={"/inquires"}
+                                        <Link to={"/inquiries"}
                                               onClick={()=>setIsMenuOpen(false)}
                                               className={twMerge(
                                                   ['flex','items-center','gap-2','px-4','py-2'],

@@ -10,6 +10,10 @@ import NoticeList from "../Pages/notices/NoticeList.tsx";
 import NoticeCreate from "../Pages/notices/NoticeCreate.tsx";
 import NoticeDetail from "../Pages/notices/NoticeDetail.tsx";
 import NoticeEdit from "../Pages/notices/NoticeEdit.tsx";
+import InquiryList from "../Pages/inquiries/InquiryList.tsx";
+import InquiryCreate from "../Pages/inquiries/InquiryCreate.tsx";
+import InquiryDetail from "../Pages/inquiries/InquiryDetail.tsx";
+import InquiryEdit from "../Pages/inquiries/InquiryEdit.tsx";
 
 const router = createBrowserRouter([
     {
@@ -42,6 +46,15 @@ const router = createBrowserRouter([
                     { path: ":id", element: <NoticeDetail /> },
                     { path: ":id/edit", element: <NoticeEdit /> },
                 ],
+            },
+            {
+                path:"inquiries",
+                children:[
+                    {index: true,element:<InquiryList/>},
+                    { path: "create", element: <InquiryCreate /> },
+                    { path: ":id", element: <InquiryDetail /> },
+                    { path: ":id/edit", element: <InquiryEdit/> },
+                ]
             },
         ],
     },

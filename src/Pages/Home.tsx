@@ -11,8 +11,8 @@ function Home(){
        //바로 try catch문을 바로 쓰는 것은 좋은 방법이 아님 함수를 사용한 후 사용
         const loadVideos=async ()=>{
             try{
-                const result =await fetchVideos()
-                setVideos(result);
+                const result =await fetchVideos();
+                setVideos(result.videos);
             }catch (e){
                 console.log(e)
             }finally {

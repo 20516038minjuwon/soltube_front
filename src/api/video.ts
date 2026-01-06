@@ -19,10 +19,17 @@ export interface Video {
         profileImage?:string;
     }
 }
+interface VideoListResponse {
+    videos:Video[];
+    total:number;
+    page:number;
+    totalPage:number;
+    hasNextPage:boolean;
+}
 
 //지금까지는 직접적인 멸령을 통해서 사용했다면 이번엔 따로 속성을 통해 감싸서 사용할 것임
-export const fetchVideos = async () => {
-    const response =await api.get<Video[]>("/videos");
+export const fetchVideos = async (page=1,limit=24) => {
+    const response =await api.get<VideoListResponse>(`/videos?page=${page}&limit=${limit}`);
     return response.data;
 }
 

@@ -41,5 +41,12 @@ export const toggleVideoLike = async (videoId: number) => {
     const response = await api.post<{ isLiked: boolean }>(`/videos/${videoId}/like`);
     return response.data;
 }
-
 //통신이 무엇인가 잘못됐다는 오류가 뜨면 해당 파일에서 해결할 수 있게끔 다 만들어둘 것임
+
+//비디오 검색 API
+export const searchVideos=async (query:string) => {
+    const response= await api.get<Video[]>(`/videos/search`,{
+        params:{ q: query }
+    });
+    return response.data;
+}

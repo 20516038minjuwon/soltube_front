@@ -1,4 +1,4 @@
-import { type MouseEvent, useState } from "react";
+import { type FormEvent, type MouseEvent, useState } from "react";
 import {twMerge} from "tailwind-merge";
 import { Link, useNavigate } from "react-router";
 import {
@@ -46,6 +46,12 @@ function Header() {
         setIsMenuOpen(false);
         navigate("/sign-in");
     }
+    const [keyword, setKeyword] = useState("");
+    const handleSearch=(e:FormEvent<HTMLFormElement>)=>{
+        e.preventDefault();
+        if(!keyword.trim())return;
+        navigate(`/result?q=${keyword}`);
+    }
 
     return<>
         <header className={twMerge(
@@ -71,9 +77,13 @@ function Header() {
                 ['flex-1','max-w-[600px]'],
                 ['hidden','md:flex','items-center']
             )}>
-                <div className={'flex w-full'}>
+                <form
+                    onSubmit={handleSearch}
+                    className={'flex w-full'}>
                     <input
                         placeholder={"검색"}
+                        value={keyword}
+                        onChange={e=>setKeyword(e.target.value)}
                         className={twMerge(
                             ['border','border-divider','shadow-inner'],
                             ['w-full','rounded-l-full','px-4','py-2'],
@@ -81,13 +91,15 @@ function Header() {
                             ['focus:outline-none','focus:border-secondary-main'],
                         )}
                     />
-                    <button className={twMerge(
+                    <button
+                        type={"submit"}
+                        className={twMerge(
                         ['px-4','py-2'],
                         ['border','border-divider','rounded-r-full','border-l-0']
                     )}>
                         <MdSearch className={twMerge(['w-6','h-6'])}/>
                     </button>
-                </div>
+                </form>
             </div>
             {/*오른쪽*/}
             <div className={twMerge(['flex','items-center','gap-2'])}>

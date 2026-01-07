@@ -17,14 +17,16 @@ import {FaRegUserCircle, FaYoutube} from "react-icons/fa";
 import {useThemeStore} from "../Stores/useTheme.ts";
 import { useModalStore } from "../Stores/useModal.ts";
 import { useAuthStore } from "../Stores/useAuthStore.ts";
-import Backdrop from "./ui/Backdrop.tsx";
-import Avatar from "./ui/Avatar.tsx";
+import Backdrop from "../Components/ui/Backdrop.tsx";
+import Avatar from "../Components/ui/Avatar.tsx";
+import {useLayoutStore} from "../Stores/useLayoutStore.ts";
 
 function Header() {
     const navigate = useNavigate();
     const {theme,toggleTheme}=useThemeStore();
     const{openModal}=useModalStore();
     const{user, logout,isLoggedIn}=useAuthStore();
+    const { toggleSidebar } = useLayoutStore();
 
     const[isMenuOpen, setIsMenuOpen]=useState(false);
 
@@ -62,7 +64,9 @@ function Header() {
         )}>
             {/*왼족*/}
             <div className={twMerge(['flex','items-center','gap-4'])}>
-                <button className={twMerge(
+                <button
+                    onClick = {toggleSidebar}
+                    className={twMerge(
                     ['p-2','rounded-full','hover:bg-text-default/10']
                 )}>
                     <MdMenu className={twMerge(['w-6','h-6'])}/>
@@ -127,7 +131,7 @@ function Header() {
                 </button>
                 <Link
                     onClick={handleUploadClick}
-                    to={"/videos/upload"} className={twMerge(
+                    to={"/video/upload"} className={twMerge(
                     ['flex','items-center','justify-center','p-2'],
                     ['rounded-full','hover:bg-text-default/10']
                 )}

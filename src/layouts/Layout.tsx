@@ -1,12 +1,15 @@
 import { twMerge } from "tailwind-merge";
 import { Outlet } from "react-router";
-import Header from "../Components/Header.tsx";
+import Header from "../layout/Header.tsx";
 import { useThemeStore } from "../Stores/useTheme.ts";
 import { useEffect } from "react";
 import GlobalModal from "../Components/ui/GlobalModal.tsx";
+import Sidebar from "../layout/Sidebar.tsx";
+import { useLayoutStore } from "../Stores/useLayoutStore.ts";
 
 function Layout() {
     const {theme}=useThemeStore();
+    const {isSidebarOpen}=useLayoutStore();
 
     /*theme라는 값이 변경이 될때 html태그에 class="dark"를 추가/제거 */
     useEffect(()=>{
@@ -20,9 +23,14 @@ function Layout() {
     return (
         <div className={twMerge(['min-h-calc[100dvh-var(--height-header)]','pt-14'])}>
             <Header />
-            <main className={'p-4'}>
-                <Outlet/>
-            </main>
+            <div className={twMerge(['flex'])}>
+                <Sidebar />
+                <main className={twMerge(['p-4 flex-1 transition-all duration-200'],
+                    isSidebarOpen ? ['sm:ml-60']:['sm:ml-18']
+                )}>
+                    <Outlet/>
+                </main>
+            </div>
             <GlobalModal/>
         </div>
     )

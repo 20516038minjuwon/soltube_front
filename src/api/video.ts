@@ -56,3 +56,13 @@ export const fetchSubscribedVideos =async()=>{
     const response = await api.get<Video[]>("/videos/subscribed");
     return response.data;
 }
+
+export const fetchHistoryVideos =async()=>{
+    const response =await api.get<Video[]>("/videos/history");
+    return response.data;
+}
+
+export const fetchLikedVideos =async()=>{
+    const response =await api.get<Video[]>("/videos/liked");
+    return response.data;
+}

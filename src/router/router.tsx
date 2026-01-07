@@ -16,6 +16,8 @@ import InquiryDetail from "../Pages/inquiries/InquiryDetail.tsx";
 import InquiryEdit from "../Pages/inquiries/InquiryEdit.tsx";
 import SearchResults from "../Pages/results/SearchResults.tsx";
 import Subscriptions from "../Pages/channels/Subscriptions.tsx";
+import VideosHistory from "../Pages/channels/VideosHistory.tsx";
+import LikedVideos from "../Pages/channels/LikedVideos.tsx";
 
 const router = createBrowserRouter([
     {
@@ -67,6 +69,14 @@ const router = createBrowserRouter([
                 children: [
                     { path: "subscriptions", element: <Subscriptions /> },
                 ],
+            },
+            {
+                path: "videos",
+                children: [{ path: "history", element: <VideosHistory /> }],
+            },
+            {
+                path: "playlist",
+                children: [{ path: "liked", element: <LikedVideos /> }],
             },
         ],
     },

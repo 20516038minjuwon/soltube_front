@@ -66,3 +66,7 @@ export const fetchLikedVideos =async()=>{
     const response =await api.get<Video[]>("/videos/liked");
     return response.data;
 }
+export const fetchChannelVideos =async()=>{
+    const response =await api.get<Video[]>("/videos/channel");
+    return response.data;
+}

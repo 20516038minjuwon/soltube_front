@@ -15,6 +15,7 @@ import InquiryCreate from "../Pages/inquiries/InquiryCreate.tsx";
 import InquiryDetail from "../Pages/inquiries/InquiryDetail.tsx";
 import InquiryEdit from "../Pages/inquiries/InquiryEdit.tsx";
 import SearchResults from "../Pages/results/SearchResults.tsx";
+import Subscriptions from "../Pages/channels/Subscriptions.tsx";
 
 const router = createBrowserRouter([
     {
@@ -24,7 +25,10 @@ const router = createBrowserRouter([
             { path: "", element: <Home /> },
             { path: "sign-in", element: <SignIn /> },
             { path: "sign-up", element: <SignUp /> },
-            { path: "users", children: [{ path: "edit", element: <ProfileEdit /> }] },
+            {
+                path: "users",
+                children: [{ path: "edit", element: <ProfileEdit /> }],
+            },
 
             //    경로 : /videos/upload > Upload
             //          /videos/:id    > Detail
@@ -49,15 +53,21 @@ const router = createBrowserRouter([
                 ],
             },
             {
-                path:"inquiries",
-                children:[
-                    {index: true,element:<InquiryList/>},
+                path: "inquiries",
+                children: [
+                    { index: true, element: <InquiryList /> },
                     { path: "create", element: <InquiryCreate /> },
                     { path: ":id", element: <InquiryDetail /> },
-                    { path: ":id/edit", element: <InquiryEdit/> },
-                ]
+                    { path: ":id/edit", element: <InquiryEdit /> },
+                ],
             },
-            {path:"result",element:<SearchResults/>}
+            { path: "result", element: <SearchResults /> },
+            {
+                path: "channels",
+                children: [
+                    { path: "subscriptions", element: <Subscriptions /> },
+                ],
+            },
         ],
     },
 ]);

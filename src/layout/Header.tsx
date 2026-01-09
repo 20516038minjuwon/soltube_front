@@ -2,7 +2,7 @@ import { type FormEvent, type MouseEvent, useState } from "react";
 import {twMerge} from "tailwind-merge";
 import { Link, useNavigate } from "react-router";
 import {
-    MdAccountBox,
+    MdAccountBox, MdAdminPanelSettings,
     MdCampaign,
     MdDarkMode,
     MdEdit,
@@ -176,7 +176,7 @@ function Header() {
                                             <MdEdit className={'w-4 h-4'}/>
                                             프로필 수정
                                         </Link>
-                                        <Link to={`/channel/${user.id}`}
+                                        <Link to={`/channels/${user.id}`}
                                               onClick={()=>setIsMenuOpen(false)}
                                               className={twMerge(
                                                   ['flex','items-center','gap-2','px-4','py-2'],
@@ -195,7 +195,20 @@ function Header() {
                                             고객센터 (1:1문의)
                                         </Link>
                                     </div>
-                                    <div className={twMerge(['border-t','border-divider','my-1'])}></div>
+                                    <div className={twMerge(['border-t','border-divider','my-1'])}/>
+                                    {user.role==="ADMIN"&&(
+                                        <Link
+                                            to={"/admin"}
+                                            onClick={()=>setIsMenuOpen(false)}
+                                            className={twMerge(
+                                                ['w-full','flex','items-center','gap-3','px-4','py-2'],
+                                                ['text-sm','text-info-main','hover:bg-info-main/5']
+                                            )}
+                                        >
+                                            <MdAdminPanelSettings className={'w-6 h-6'}/>
+                                            관리자 페이지
+                                        </Link>
+                                    )}
                                     <button
                                         onClick={handleLogout}
                                         className={twMerge(
